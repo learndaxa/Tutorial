@@ -35,7 +35,26 @@ The last step is to download the [Vulkan SDK](https://vulkan.lunarg.com/sdk/home
 
 ## Linux
 
-(Todo)
+### Tools
+
+```apt
+sudo apt-get update
+sudo apt-get install ninja-build clang cmake git
+```
+```pacman
+pacman -Syu
+pacman -S ninja-build clang cmake git
+```
+
+### Vulkan SDK
+
+```ubuntu
+sudo apt update
+sudo apt install vulkan-sdk
+```
+```other
+https://vulkan.lunarg.com/sdk/home#linux
+```
 
 ## Installing VSCode (Windows & Linux)
 
