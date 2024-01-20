@@ -2,6 +2,8 @@
 
 ```cpp
 while (!window.should_close()){
+    window.update();
+
     if (window.swapchain_out_of_date){
         swapchain.resize();
         window.swapchain_out_of_date = false;
