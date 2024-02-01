@@ -50,7 +50,7 @@ This defines the color space for the swapchain images. (`R8G8B8A8_UINT` is the d
 
 You can now acquire a new swapchain image by running
 
-```cp
+```cpp
 daxa::ImageId swapchain_image = swapchain.acquire_next_image();
 ```
 
