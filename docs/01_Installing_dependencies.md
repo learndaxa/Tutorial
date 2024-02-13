@@ -48,7 +48,11 @@ pacman -S ninja-build clang cmake git
 
 ### Vulkan SDK
 
+For the Vulkan SDK, we advise you follow the instructions on [lunarg.com](https://vulkan.lunarg.com/doc/view/latest/linux/getting_started_ubuntu.html), as they'll go over how to add the necessary sources and such for your package manager, but here are the commands for Ubuntu 22.04 (Jammy):
+
 ```ubuntu
+wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
+sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list http://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
 sudo apt update
 sudo apt install vulkan-sdk
 ```
