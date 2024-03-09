@@ -48,7 +48,7 @@ This defines the color space for the swapchain images. (`R8G8B8A8_UINT` is the d
 
 ## Swapchain usage
 
-You can now acquire a new swapchain image by running
+You can now acquire a new swapchain image by later running
 
 ```cpp
 daxa::ImageId swapchain_image = swapchain.acquire_next_image();
@@ -67,7 +67,6 @@ If all swapchain images are used in queued submissions to the GPU, the present c
 #include <daxa/utils/pipeline_manager.hpp>
 #include <daxa/utils/task_graph.hpp>
 
-using namespace daxa::task_resource_uses;
 using namespace daxa::types;
 
 int main(int argc, char const *argv[])
