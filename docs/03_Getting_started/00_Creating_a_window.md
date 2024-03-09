@@ -151,7 +151,6 @@ We can now go ahead and open our window for the first time. We therefore need to
 #include <daxa/utils/pipeline_manager.hpp>
 #include <daxa/utils/task_graph.hpp>
 
-using namespace daxa::task_resource_uses;
 using namespace daxa::types;
 
 int main(int argc, char const *argv[])
