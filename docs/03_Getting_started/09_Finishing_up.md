@@ -38,3 +38,11 @@ device.destroy_buffer(buffer_id);
 ## Running the code
 
 You have now completed the Daxa tutorial! If you now run the code, you should have a triangle appearing in the window!
+Running the code with the VSCode debugger should be as simple as pressing the debug button, though you may need to create a launch.json if the working directory is wrong.
+
+Otherwise, you can manually run the CMake commands to configure, build, and then run the executable directly like so:
+```
+cmake --preset=Debug
+cmake --build build/Debug
+./build/Debug/learndaxa.exe
+```
