@@ -248,7 +248,7 @@ int main(int argc, char const *argv[])
 ```
 
 ```cpp
-// src/window.cpp
+// src/window.hpp
 
 #pragma once
 
@@ -348,4 +348,56 @@ struct AppWindow {
         return glfwWindowShouldClose(glfw_window_ptr);
     }
 };
+```
+
+```cpp
+// src/shaders/shared.inl
+
+#pragma once
+
+#include <daxa/daxa.inl>
+
+struct MyVertex
+{
+    daxa_f32vec3 position;
+    daxa_f32vec3 color;
+};
+
+DAXA_DECL_BUFFER_PTR(MyVertex)
+
+struct MyPushConstant
+{
+    daxa_BufferPtr(MyVertex) my_vertex_ptr;
+};
+```
+
+```cpp
+// src/shaders/main.glsl
+
+#include <daxa/daxa.inl>
+#include <shared.inl>
+
+DAXA_DECL_PUSH_CONSTANT(MyPushConstant, push)
+
+#if DAXA_SHADER_STAGE == DAXA_SHADER_STAGE_VERTEX
+
+layout(location = 0) out daxa_f32vec3 v_col;
+void main()
+{
+    MyVertex vert = deref(push.my_vertex_ptr[gl_VertexIndex]);
+    gl_Position = daxa_f32vec4(vert.position, 1);
+    v_col = vert.color;
+}
+
+#elif DAXA_SHADER_STAGE == DAXA_SHADER_STAGE_FRAGMENT
+
+layout(location = 0) in daxa_f32vec3 v_col;
+layout(location = 0) out daxa_f32vec4 color;
+void main()
+{
+    color = daxa_f32vec4(v_col, 1);
+    debugPrintfEXT("test\n");
+}
+
+#endif
 ```
