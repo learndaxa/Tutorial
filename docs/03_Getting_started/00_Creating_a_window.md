@@ -4,12 +4,12 @@ The first thing when developing a graphics application is to open a blank window
 
 ## Creating a header file
 
-In this tutorial, we will create a new header file `window.hpp` that is responsible for interfacing and abstracting the windowing library of our choice GLFW.
+In this tutorial, we will create a new header file `src/window.hpp` that is responsible for interfacing and abstracting the windowing library of our choice GLFW.
 
 ```cpp
 #pragma once
 
-struct Window{
+struct AppWindow{
 };
 ```
 
@@ -17,6 +17,7 @@ Next, we need to include the libraries. Since we need the native window handle l
 
 ```cpp
 #include <daxa/daxa.hpp>
+// For things like `u32`. Not necessary of course.
 using namespace daxa::types;
 
 #include <GLFW/glfw3.h>
@@ -43,7 +44,7 @@ bool swapchain_out_of_date = false;
 We can now create a constructor and a destructor for the window.
 
 ```cpp
-explicit Window(char const * window_name, u32 sx = 800, u32 sy = 600) : width{sx}, height{sy} {
+explicit AppWindow(char const * window_name, u32 sx = 800, u32 sy = 600) : width{sx}, height{sy} {
     // Initialize GLFW
     glfwInit();
 
@@ -59,19 +60,16 @@ explicit Window(char const * window_name, u32 sx = 800, u32 sy = 600) : width{sx
     // Set the user pointer to this window
     glfwSetWindowUserPointer(glfw_window_ptr, this);
 
-    // Enable vsync (To limit the framerate to the refresh rate of the monitor)
-    glfwSwapInterval(1);
-
     // When the window is resized, update the width and height and mark the swapchain as out of date
-    glfwSetWindowContentScaleCallback(glfw_window_ptr, [](GLFWwindow* window, float xscale, float yscale){
-        auto* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
-        win->width = static_cast<u32>(xscale);
-        win->height = static_cast<u32>(yscale);
+    glfwSetWindowSizeCallback(glfw_window_ptr, [](GLFWwindow *window, int size_x, int size_y) {
+        auto* win = static_cast<AppWindow*>(glfwGetWindowUserPointer(window));
+        win->width = static_cast<u32>(size_x);
+        win->height = static_cast<u32>(size_y);
         win->swapchain_out_of_date = true;
     });
 }
 
-~Window() {
+~AppWindow() {
     glfwDestroyWindow(glfw_window_ptr);
     glfwTerminate();
 }
@@ -145,18 +143,10 @@ We can now go ahead and open our window for the first time. We therefore need to
 ```cpp
 #include "window.hpp"
 
-#include <iostream>
-
-#include <daxa/daxa.hpp>
-#include <daxa/utils/pipeline_manager.hpp>
-#include <daxa/utils/task_graph.hpp>
-
-using namespace daxa::types;
-
 int main(int argc, char const *argv[])
 {
     // Create a window
-    auto window = Window("Learn Daxa", 860, 640);
+    auto window = AppWindow("Learn Daxa", 860, 640);
 
     // Daxa code goes here...
 

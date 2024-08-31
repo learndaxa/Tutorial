@@ -5,7 +5,7 @@ The Vulkan spec defines Push Constants as:
 
 ## Implementation
 
-To use push constants in our demo project, we need to create a new file: `shader/shared.inl` which will be a shared file between our main program and our shader file. Since Glsl is more or less a superset of basic C, we can use some code snippets in both languages.
+To use push constants in our demo project, we need to create a new file: `src/shader/shared.inl` which will be a shared file between our main program and our shader file. Since Glsl is more or less a superset of basic C, we can use some code snippets in both languages.
 
 Since this document is treated as a header file in our C++ code, we can simply insert `#pragma once` at the top to make sure it's only included once. We also need to include the Daxa (Shader) API directly beneath it: `#include <daxa/daxa.inl>`.
 

@@ -29,22 +29,18 @@ daxa::Swapchain swapchain = device.create_swapchain({
 });
 ```
 
-In the sample code, the native window handle can be obtained by the `Window#get_native_handle` and `Window#get_native_platform`
+In the sample code, the native window handle can be obtained by 2 of the helper-functions we created `AppWindow::get_native_handle()` and `AppWindow::get_native_platform()`
 
 ### daxa::PresentMode
 
-This defines how the rendered images are supplied to your screen. `daxa::PresentMode::MAILBOX` is the recommended default option for most use cases.
+This defines how the rendered images are supplied to your screen. `daxa::PresentMode::FIFO` is the recommended default option for most use cases.
 
 | mode | meaning |
 | --- | --- |
 | daxa::PresentMode::IMMEDIATE | Images submitted by your application are transferred to the screen right away, which may result in tearing |
 | daxa::PresentMode::FIFO | The swapchain is a queue where the display takes an image from the front of the queue when the display is refreshed and the program inserts rendered images at the back of the queue. If the queue is full then the program has to wait. This is most similar to vertical sync as found in modern games. The moment that the display is refreshed is known as "vertical blank". |
 | daxa::PresentMode::FIFO_RELAXED | This mode only differs from the previous one if the application is late and the queue was empty at the last vertical blank. Instead of waiting for the next vertical blank, the image is transferred right away when it finally arrives. This may result in visible tearing. |
-| daxa::PresentMode::MAILBOX | This is another variation of the second mode. Instead of blocking the application when the queue is full, the images that are already queued are simply replaced with the newer ones. This mode can be used to render frames as fast as possible while still avoiding tearing, resulting in fewer latency issues than standard vertical sync. This is commonly known as "triple buffering", although the existence of three buffers alone does not necessarily mean that the framerate is unlocked. |
-
-### daxa::Format
-
-This defines the color space for the swapchain images. (`R8G8B8A8_UINT` is the default 256-bit RGBA color space most displays use).
+| daxa::PresentMode::MAILBOX | This is another variation of the second mode. Instead of blocking the application when the queue is full, the images that are already queued are simply replaced with the newer ones. This mode can be used to render frames as fast as possible while still avoiding tearing, resulting in fewer latency issues than standard vertical sync. This is commonly known as "triple buffering", although the existence of three buffers alone does not necessarily mean that the framerate is unlocked. Although this may be desirable, it has limited support on AMD devices |
 
 ## Swapchain usage
 
@@ -61,59 +57,19 @@ If all swapchain images are used in queued submissions to the GPU, the present c
 ```cpp
 #include "window.hpp"
 
-#include <iostream>
-
-#include <daxa/daxa.hpp>
-#include <daxa/utils/pipeline_manager.hpp>
-#include <daxa/utils/task_graph.hpp>
-
-using namespace daxa::types;
-
 int main(int argc, char const *argv[])
 {
     // Create a window
-    auto window = Window("Learn Daxa", 860, 640);
+    auto window = AppWindow("Learn Daxa", 860, 640);
 
     daxa::Instance instance = daxa::create_instance({});
 
-    daxa::Device device = instance.create_device({
-        .selector = [](daxa::DeviceProperties const &device_props) -> i32
-        {
-            i32 score = 0;
-            switch (device_props.device_type)
-            {
-            case daxa::DeviceType::DISCRETE_GPU:
-                score += 10000;
-                break;
-            case daxa::DeviceType::VIRTUAL_GPU:
-                score += 1000;
-                break;
-            case daxa::DeviceType::INTEGRATED_GPU:
-                score += 100;
-                break;
-            default:
-                break;
-            }
-            score += static_cast<i32>(device_props.limits.max_memory_allocation_count / 100000);
-            return score;
-        },
-        .name = "my device",
-    });
+    daxa::Device device = instance.create_device_2(instance.choose_device({}, {}));
 
     daxa::Swapchain swapchain = device.create_swapchain({
         .native_window = window.get_native_handle(),
         .native_window_platform = window.get_native_platform(),
-        .surface_format_selector = [](daxa::Format format)
-        {
-            switch (format)
-            {
-            case daxa::Format::R8G8B8A8_UINT:
-                return 100;
-            default:
-                return daxa::default_format_score(format);
-            }
-        },
-        .present_mode = daxa::PresentMode::MAILBOX,
+        .present_mode = daxa::PresentMode::FIFO,
         .image_usage = daxa::ImageUsageFlagBits::TRANSFER_DST,
         .name = "my swapchain",
     });

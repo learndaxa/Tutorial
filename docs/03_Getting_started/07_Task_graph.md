@@ -11,28 +11,21 @@ Each task struct must consist of a child struct 'Uses' that will store all share
 For our task, this base task structure will look like this:
 
 ```cpp
-struct UploadVertexDataTask
+void upload_vertex_data_task(daxa::TaskGraph & tg, daxa::TaskBufferView vertices)
 {
-    struct Uses
-    {
-        daxa::BufferTransferWrite vertex_buffer{};
-    } uses = {};
-
-    std::string_view name = "upload vertices";
-
-    void callback(daxa::TaskInterface ti){
-        // [...]
-    }
-};
+    tg.add_task({
+        .attachments = {
+            daxa::inl_attachment(daxa::TaskBufferAccess::TRANSFER_WRITE, vertices),
+        },
+        .task = [=](daxa::TaskInterface ti)
+        {
+            // ...
+        },
+    });
+}
 ```
 
-In the callback function, we will first need to get the command recorder.
-
-```cpp
-auto & recorder = ti.get_recorder();
-```
-
-We also need the data we will upload. In this sample, we will use the standard triangle vertices.
+In the `task` callback function, for the sake of brevity, we will create the data we will upload. In this sample, we will use the standard triangle vertices.
 
 ```cpp
 auto data = std::array{
@@ -45,86 +38,78 @@ auto data = std::array{
 To send the data to the GPU, we can create a staging buffer, which has host access, so that we can then issue a command to copy from this buffer to the dedicated GPU memory.
 
 ```cpp
-auto staging_buffer_id = ti.get_device().create_buffer({
+auto staging_buffer_id = ti.device.create_buffer({
     .size = sizeof(data),
     .allocate_info = daxa::MemoryFlagBits::HOST_ACCESS_RANDOM,
     .name = "my staging buffer",
 });
 ```
 
-We can also ask the command list to destroy this temporary buffer since we don't care about it living, but we DO need it to survive through its usage on the GPU (which won't happen until after these commands are submitted), so we tell the command list to destroy it in a deferred fashion.
+We can also ask the command recorder to destroy this temporary buffer since we don't care about it living, but we DO need it to survive through its usage on the GPU (which won't happen until after these commands are submitted), so we tell the command recorder to destroy it in a deferred fashion.
 
 ```cpp
-recorder.destroy_buffer_deferred(staging_buffer_id);
+ti.recorder.destroy_buffer_deferred(staging_buffer_id);
 ```
 
 We then get the memory-mapped pointer of the staging buffer, and write the data directly to it.
 
 ```cpp
-auto * buffer_ptr = ti.get_device().get_host_address_as<std::array<MyVertex, 3>>(staging_buffer_id).value();
+auto * buffer_ptr = ti.device.buffer_host_address_as<std::array<MyVertex, 3>>(staging_buffer_id).value();
 *buffer_ptr = data;
-recorder.copy_buffer_to_buffer({
+ti.recorder.copy_buffer_to_buffer({
     .src_buffer = staging_buffer_id,
-    .dst_buffer = uses.vertex_buffer.buffer(),
+    .dst_buffer = ti.get(vertices).ids[0],
     .size = sizeof(data),
 });
 ```
 
 ## Creating a Rendering task
 
-We will again create a base task:
+We will again create a simple task:
 
 ```cpp
-struct DrawToSwapchainTask
+void draw_vertices_task(daxa::TaskGraph & tg, std::shared_ptr<daxa::RasterPipeline> pipeline, daxa::TaskBufferView vertices, daxa::TaskImageView render_target)
 {
-    struct Uses
-    {
-        // We declare a vertex buffer read. Later we assign the task vertex buffer handle to this use.
-        daxa::BufferVertexShaderRead vertex_buffer{};
-        // We declare a color target. We will assign the swapchain task image to this later.
-        // The name `ImageColorAttachment<T_VIEW_TYPE = DEFAULT>` is a typedef for `daxa::TaskImageUse<daxa::TaskImageAccess::COLOR_ATTACHMENT, T_VIEW_TYPE>`.
-        daxa::ImageColorAttachment<> color_target{};
-    } uses = {};
-
-    daxa::RasterPipeline * pipeline = {};
-
-    std::string_view name = "draw task";
-
-    void callback(daxa::TaskInterface ti){
-        auto & recorder = ti.get_recorder();
-
-        // [...]
-    }
-};
+    tg.add_task({
+        .attachments = {
+            daxa::inl_attachment(daxa::TaskBufferAccess::VERTEX_SHADER_READ, vertices),
+            daxa::inl_attachment(daxa::TaskImageAccess::COLOR_ATTACHMENT, daxa::ImageViewType::REGULAR_2D, render_target),
+        },
+        .task = [=](daxa::TaskInterface ti)
+        {
+            // [...]
+        },
+        .name = "draw vertices",
+    });
+}
 ```
 
 We first need to get the screen width and height in the callback function. We can do this by getting the target image dimensions.
 
 ```cpp
-auto const size_x = ti.get_device().info_image(uses.color_target.image()).value().size.x;
-auto const size_y = ti.get_device().info_image(uses.color_target.image()).value().size.y;
+auto const size = ti.device.info(ti.get(render_target).ids[0]).value().size;
 ```
 
 Next, we need to record an actual renderpass. The values are pretty self-explanatory if you have used OpenGL before. This contains the actual rendering logic.
 
 ```cpp
-auto render_recorder = std::move(recorder).begin_renderpass({
+daxa::RenderCommandRecorder render_recorder = std::move(ti.recorder).begin_renderpass({
     .color_attachments = std::array{
         daxa::RenderAttachmentInfo{
-            .image_view = uses.color_target.view(),
+            .image_view = ti.get(render_target).view_ids[0],
             .load_op = daxa::AttachmentLoadOp::CLEAR,
             .clear_value = std::array<daxa::f32, 4>{0.1f, 0.0f, 0.5f, 1.0f},
         },
     },
-    .render_area = {.x = 0, .y = 0, .width = size_x, .height = size_y},
+    .render_area = {.width = size.x, .height = size.y},
 });
 
 render_recorder.set_pipeline(*pipeline);
 render_recorder.push_constant(MyPushConstant{
-    .my_vertex_ptr = ti.get_device().get_device_address(uses.vertex_buffer.buffer()).value(),
+    .my_vertex_ptr = ti.device.device_address(ti.get(vertices).ids[0]).value(),
 });
 render_recorder.draw({.vertex_count = 3});
-recorder = std::move(render_recorder).end_renderpass();
+ti.recorder = std::move(render_recorder).end_renderpass();
 ```
 
 ## Creating a Rendering TaskGraph
@@ -196,21 +181,17 @@ Because this is only executed once, we can define it in a separate context.
 
 ```cpp
 {
-        auto upload_task_graph = daxa::TaskGraph({
-            .device = device,
-            .name = "upload",
-        });
+    auto upload_task_graph = daxa::TaskGraph({
+        .device = device,
+        .name = "upload",
+    });
 
-        upload_task_graph.use_persistent_buffer(task_vertex_buffer);
+    upload_task_graph.use_persistent_buffer(task_vertex_buffer);
 
-        upload_task_graph.add_task(UploadVertexDataTask{
-            .uses = {
-                .vertex_buffer = task_vertex_buffer.view(),
-            },
-        });
+    upload_vertex_data_task(upload_task_graph, task_vertex_buffer);
 
-        upload_task_graph.submit({});
-        upload_task_graph.complete({});
-        upload_task_graph.execute({});
-    }
+    upload_task_graph.submit({});
+    upload_task_graph.complete({});
+    upload_task_graph.execute({});
+}
 ```
