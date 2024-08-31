@@ -6,7 +6,7 @@ This page will explain how to install all the necessary tools to compile the Dax
 
 ### Visual Studio
 
-In this tutorial, ~~we will be using Clang as our compiler~~ (EDIT: For now, there are some issues with Clang on Windows, so ). Clang relies on the Microsoft STL, which we can get most easily by installing [Visual Studio](https://visualstudio.microsoft.com/de/vs/community/) and selecting the C++ desktop development component during installation
+In this tutorial, ~~we will be using Clang as our compiler~~ (EDIT: For now, there are some issues with Clang on Windows, so we'll just use the Visual Studio compiler for now). Clang relies on the Microsoft STL, which we can get most easily by installing [Visual Studio](https://visualstudio.microsoft.com/de/vs/community/) and selecting the C++ desktop development component during installation
 
 ### Clang & Ninja
 

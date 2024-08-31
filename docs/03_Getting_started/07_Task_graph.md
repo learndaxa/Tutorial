@@ -1,6 +1,6 @@
 ## Description
 
-While not entirely necessary, we're going to use TaskGraph, which allows us to compile a list of GPU tasks and their dependencies into a synchronized set of commands. This simplifies your code by making different tasks completely self-contained, while also generating the most optimal synchronization for the tasks you describe.
+While not entirely necessary, we're going to use TaskGraph, which allows us to compile a list of GPU tasks and their dependencies into a synchronized set of commands. This simplifies your code by making different tasks completely self-contained, while also generating the most optimal synchronization for the tasks you describe. To use TaskGraph, as its also an optional feature, add the include path `<daxa/utils/task_graph.hpp>` at the top of our main file.
 
 ## Creating a vertex uploading task
 
@@ -19,7 +19,7 @@ void upload_vertex_data_task(daxa::TaskGraph & tg, daxa::TaskBufferView vertices
         },
         .task = [=](daxa::TaskInterface ti)
         {
-            // ...
+            // [...]
         },
     });
 }
@@ -148,16 +148,10 @@ loop_task_graph.use_persistent_buffer(task_vertex_buffer);
 loop_task_graph.use_persistent_image(task_swapchain_image);
 ```
 
-Since we need the task graph to do something, we add a task that draws to the screen:
+Since we need the task graph to do something, we add the task that draws to the screen:
 
 ```cpp
-loop_task_graph.add_task(DrawToSwapchainTask{
-    .uses = {
-        .vertex_buffer = task_vertex_buffer.view(),
-        .color_target = task_swapchain_image.view(),
-    },
-    .pipeline = pipeline.get(),
-});
+draw_vertices_task(loop_task_graph, pipeline, task_vertex_buffer, task_swapchain_image);
 ```
 
 Once we have added all the tasks we want, we have to tell the task graph we are done.
