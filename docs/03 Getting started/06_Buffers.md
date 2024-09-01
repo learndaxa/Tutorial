@@ -1,3 +1,10 @@
+---
+title: Buffers
+description: Buffers
+slug: "getting-started/buffers"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/06_Buffers.md
+---
+
 ## Description
 
 When uploading data to the GPU, OpenGL used target-specific buffer targets (Vertex Object/Array Buffers, etc.). Daxa uses bindless buffers instead. This means a buffer isn't bound to one target only. One buffer can be used in all of these different bind targets and there is therefore only one buffer 'type'.

@@ -1,3 +1,10 @@
+---
+title: Choosing a device
+description: Choosing a device
+slug: "getting-started/choosing-a-device"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/02_Choosing_a_device.md
+---
+
 ## Device selection
 
 A PC can have multiple graphics cards. Unlike OpenGL, you need to manually select which GPU you want to use to perform calculations. Since each GPU is different Daxa provides a simple system to select the GPU best suited for your application. You can choose the considered parameters yourself and change how they are weighed against each other.

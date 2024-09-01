@@ -1,3 +1,10 @@
+---
+title: Task graph
+description: Task graph
+slug: "getting-started/task-graph"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/07_Task_graph.md
+---
+
 ## Description
 
 While not entirely necessary, we're going to use TaskGraph, which allows us to compile a list of GPU tasks and their dependencies into a synchronized set of commands. This simplifies your code by making different tasks completely self-contained, while also generating the most optimal synchronization for the tasks you describe. To use TaskGraph, as its also an optional feature, add the include path `<daxa/utils/task_graph.hpp>` at the top of our main file.

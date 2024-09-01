@@ -1,3 +1,10 @@
+---
+title: Creating an instance
+description: Creating an instance
+slug: "getting-started/creating-an-instance"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/01_Creating_an_instance.md
+---
+
 ## Include the header
 
 Well done! We have now created all the fundamentals and can finally start using Daxa. To use Daxa's C++ API, we need to include the following header:

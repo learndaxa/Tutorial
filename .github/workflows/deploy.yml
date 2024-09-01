@@ -1,4 +1,4 @@
-name: Deploy to tutorial.learndaxa.com
+name: Deploy to tutorial.daxa.dev
 on:
   push:
     branches: ["main"]
@@ -20,47 +20,42 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout
-          uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-        - name: Setup Node.js
-          uses: actions/setup-node@v2
-          with:
-            node-version: "20"
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "22"
 
-        - name: Setup Python
-          uses: actions/setup-python@v2
-          with:
-            python-version: "3.12"
+      - name: Clone Starlight Wiki Template
+        run: |
+          git clone https://github.com/learndaxa/StarlightWiki.git ../StarlightWiki/
 
-        - name: Clone Repos
-          run: |
-            git clone https://${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}@github.com/learndaxa/WebsiteTemplate.git ../WebsiteTemplate/
-            git clone https://${{ secrets.PRIVATE_REPO_ACCESS_TOKEN }}@github.com/learndaxa/WebsiteRenderer.git ../WebsiteRenderer/
+      - name: Copy Tutorial Pages
+        run: |
+          mkdir -p ../StarlightWiki/src/content/docs/
+          cp -r ./docs/* ../StarlightWiki/src/content/docs/
 
-        - name: Install Python dependencies
-          run: |
-            pip install -r ../WebsiteRenderer/requirements.txt
+      - name: 'Create ENV File'
+        run: |
+          touch ../StarlightWiki/.env
+          echo VITE_TITLE="Daxa Tutorial" >> ../StarlightWiki/.env
+          echo VITE_SITE_URL="https://tutorial.daxa.dev" >> ../StarlightWiki/.env
+          echo VITE_GITHUB_URL="https://github.com/learndaxa/Tutorial" >> ../StarlightWiki/.env
+          echo VITE_DISCORD_INVITE="https://discord.gg/mZrUeJfxB8" >> ../StarlightWiki/.env
 
-        - name: Rendering Markdown to Svelte
-          run: |
-            python ../WebsiteRenderer/main.py --goal tutorial --source "docs/" --destination "../WebsiteTemplate/src/routes/"
+      - name: Building Static Site
+        run: |
+          cd ../StarlightWiki/
+          npm install
+          npm run astro build
 
-        - name: Building Static Site
-          run: |
-            cd ../WebsiteTemplate/
-            npm install
-            npm run build
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "../StarlightWiki/dist/"
 
-        - name: Making static links
-          run: |
-            cd ../
-            python WebsiteRenderer/fix.py --destination "WebsiteTemplate/" --domain "https://tutorial.learndaxa.com"
-
-        - name: Upload artifact
-          uses: actions/upload-pages-artifact@v1
-          with:
-            path: "../WebsiteTemplate/build/"
-        - name: Deploy to GitHub Pages
-          id: deployment
-          uses: actions/deploy-pages@v1
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

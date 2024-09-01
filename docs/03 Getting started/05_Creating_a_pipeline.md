@@ -1,3 +1,10 @@
+---
+title: Creating a pipeline
+description: Creating a pipeline
+slug: "getting-started/creating-a-pipeline"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/05_Creating_a_pipeline.md
+---
+
 ## Pipeline manager
 
 In this tutorial, we will be using the pipeline manager, which is an additional Daxa feature that has to be explicitly imported with the header `<daxa/utils/pipeline_manager.hpp>` and also has to be enabled in our Vcpkg manifest. Both of these steps are already done in the sample code.

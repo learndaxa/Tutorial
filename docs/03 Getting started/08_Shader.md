@@ -1,3 +1,10 @@
+---
+title: Shader
+description: Shader
+slug: "getting-started/shader"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/08_Shader.md
+---
+
 ## Description
 
 Shaders are small programs running on the GPU. Most commonly are vertex- and fragment shaders. Both of these together take buffer data as input and output an image.

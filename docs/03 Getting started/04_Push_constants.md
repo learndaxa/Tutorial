@@ -1,3 +1,10 @@
+---
+title: Push constants
+description: Push constants
+slug: "getting-started/push-constants"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/04_Push_constants.md
+---
+
 ## Description
 
 The Vulkan spec defines Push Constants as:

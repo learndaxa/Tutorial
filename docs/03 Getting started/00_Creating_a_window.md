@@ -1,3 +1,10 @@
+---
+title: Creating a window
+description: Creating a window
+slug: "getting-started/creating-a-window"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/00_Creating_a_window.md
+---
+
 ## Description
 
 The first thing when developing a graphics application is to open a blank window.

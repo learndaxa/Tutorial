@@ -1,3 +1,10 @@
+---
+title: Installing dependencies
+description: Installing dependencies
+slug: "introduction/installing-dependencies"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/01 Introduction/01_Installing_dependencies.md
+---
+
 ## Important
 
 This page will explain how to install all the necessary tools to compile the Daxa repository itself, though these things are also required for consumers of Daxa as a dependency. We'll go over using Daxa as a dependency in the next page. If you have previously worked with Vulkan or C++, you can skip some of these steps. Since those steps are different for Windows and Linux, this page is split into multiple parts. Make sure you follow the steps from the correct heading.

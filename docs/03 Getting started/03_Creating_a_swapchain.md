@@ -1,3 +1,10 @@
+---
+title: Creating a swapchain
+description: Creating a swapchain
+slug: "getting-started/creating-a-swapchain"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/03_Creating_a_swapchain.md
+---
+
 ## Swapchain creation
 
 In Daxa, the swapchain is a key element in rendering graphics, acting as a bridge between your application and the display. It's a collection of buffers used for displaying images on the screen. Unlike other/older APIs, Vulkan requires explicit management of these, which Daxa luckily handles for you.
