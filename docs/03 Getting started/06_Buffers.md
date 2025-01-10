@@ -1,8 +1,8 @@
 ---
 title: Buffers
 description: Buffers
-slug: "getting-started/buffers"
-editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/06_Buffers.md
+slug: "drawing-a-triangle/buffers"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/02 Drawing a triangle/06_Buffers.md
 ---
 
 ## Description

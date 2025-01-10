@@ -1,8 +1,8 @@
 ---
 title: Finishing up
 description: Finishing up
-slug: "getting-started/finishing-up"
-editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/09_Finishing_up.md
+slug: "drawing-a-triangle/finishing-up"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/02 Drawing a triangle/09_Finishing_up.md
 ---
 
 ## Implementing the main loop

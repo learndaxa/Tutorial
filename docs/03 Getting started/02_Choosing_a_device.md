@@ -1,8 +1,8 @@
 ---
 title: Choosing a device
 description: Choosing a device
-slug: "getting-started/choosing-a-device"
-editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/02_Choosing_a_device.md
+slug: "drawing-a-triangle/choosing-a-device"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/02 Drawing a triangle/02_Choosing_a_device.md
 ---
 
 ## Device selection

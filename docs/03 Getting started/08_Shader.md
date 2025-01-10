@@ -1,8 +1,8 @@
 ---
 title: Shader
 description: Shader
-slug: "getting-started/shader"
-editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/08_Shader.md
+slug: "drawing-a-triangle/shader"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/02 Drawing a triangle/08_Shader.md
 ---
 
 ## Description

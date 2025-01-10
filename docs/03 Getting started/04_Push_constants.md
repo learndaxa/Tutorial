@@ -1,8 +1,8 @@
 ---
 title: Push constants
 description: Push constants
-slug: "getting-started/push-constants"
-editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/04_Push_constants.md
+slug: "drawing-a-triangle/push-constants"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/02 Drawing a triangle/04_Push_constants.md
 ---
 
 ## Description

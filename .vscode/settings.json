@@ -4,6 +4,9 @@
     ],
     "markdownlint.config": {
         "default": true,
-        "MD041": { "level": 2 }
+        "MD041": { "level": 2 },
+        "MD033": {
+            "allowed_elements": ["details", "summary"]
+        }
     }
 }

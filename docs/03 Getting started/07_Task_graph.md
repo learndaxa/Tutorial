@@ -1,8 +1,8 @@
 ---
 title: Task graph
 description: Task graph
-slug: "getting-started/task-graph"
-editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/03 Getting started/07_Task_graph.md
+slug: "drawing-a-triangle/task-graph"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/02 Drawing a triangle/07_Task_graph.md
 ---
 
 ## Description
