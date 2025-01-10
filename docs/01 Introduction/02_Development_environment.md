@@ -1,0 +1,39 @@
+---
+title: Development environment
+description: Setting up the Development Environment
+slug: "introduction/development-environment"
+editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/01 Introduction/02_Development_environment.md
+---
+
+## Setting Up Your Development Environment
+
+Follow these steps to set up your development environment for Daxa projects.
+
+---
+
+### Download the Starting Point
+
+Download the Daxa app template using one of the following options:
+
+- **Direct Download**: [Click here](https://codeload.github.com/learndaxa/daxa-app-template/zip/refs/heads/main) to download the template as a ZIP file.
+- **GitHub Repository**: Visit the [Daxa App Template GitHub Repository](https://github.com/learndaxa/daxa-app-template) to explore the project.
+
+Once downloaded, extract the ZIP file and open the project in **VS Code**.
+
+:::tip
+When prompted in VS Code, select the "Debug" preset for optimal setup.
+:::
+
+---
+
+### Notes on Daxa
+
+Daxa leverages **CMake** for project configuration and **Vcpkg** for dependency management. Familiarity with these tools will help you navigate and customize your setup effectively.
+
+:::note
+If you're new to CMake or Vcpkg, refer to their official documentation:
+
+- [CMake Documentation](https://cmake.org/documentation/)
+- [Vcpkg Documentation](https://vcpkg.io/en/index.html)
+
+:::
