@@ -5,6 +5,9 @@ slug: "introduction/installing-dependencies"
 editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/01 Introduction/01_Installing_dependencies.md
 ---
 
+import { Steps } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
 This guide walks you through installing the tools you need for Daxa development on **Windows** and **Linux**. If you’re experienced with Vulkan or C++, you may already have some of these tools.
 
 :::note
@@ -20,6 +23,8 @@ It’s recommended to follow these steps carefully if you’re new to Vulkan or 
 We’ll use the **Visual Studio compiler** on Windows (instead of Clang) due to current issues with Clang on Windows. You can install Visual Studio from the [official website](https://visualstudio.microsoft.com/de/vs/community/). Make sure you **select the "Desktop development with C++" component** during the setup.
 
 ### 2. Clang & Ninja
+
+<Steps>
 
 1. **Install Chocolatey** (Windows package manager) from an **elevated** (administrator) PowerShell session:
 
@@ -46,6 +51,8 @@ We’ll use the **Visual Studio compiler** on Windows (instead of Clang) due to 
     choco install ninja
     ```
 
+</Steps>
+
 ### 3. Misc Tools
 
 Install the following:
@@ -65,30 +72,43 @@ Download the [Vulkan SDK for Windows](https://vulkan.lunarg.com/sdk/home#windows
 
 ### 1. Install Basic Tools
 
-For **Debian** based systems:
-
-```bash
-sudo apt update
-sudo apt install ninja-build clang cmake git
-```
-
-For **Arch** based systems:
-
-```bash
-sudo pacman -Syu
-sudo pacman -S ninja-build clang cmake git
-```
+<Tabs syncKey="linux_distro_family">
+<TabItem label="Debian/Ubuntu">
+    ```bash
+    sudo apt update
+    sudo apt install ninja-build clang cmake git
+    ```
+</TabItem>
+<TabItem label="Arch">
+    ```bash
+    sudo pacman -Syu
+    sudo pacman -S ninja-build clang cmake git
+    ```
+</TabItem>
+</Tabs>
 
 ### 2. Vulkan SDK
 
-Follow the [LunarG Vulkan SDK Installation Guide](https://vulkan.lunarg.com/doc/view/latest/linux/getting_started_ubuntu.html) for detailed steps on your distribution. Below are commands specifically for **Ubuntu 22.04 (Jammy)**:
+Follow the [LunarG Vulkan SDK Installation Guide](https://vulkan.lunarg.com/doc/view/latest/linux/getting_started.html) for detailed steps on your distribution.
 
-```bash
-wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
-sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list http://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
-sudo apt update
-sudo apt install vulkan-sdk
-```
+<Tabs syncKey="linux_distro">
+<TabItem label="Ubuntu 24.04 (Noble Numbat)">
+    ```bash
+    wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
+    sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-noble.list http://packages.lunarg.com/vulkan/lunarg-vulkan-noble.list
+    sudo apt update
+    sudo apt install vulkan-sdk
+    ```
+</TabItem>
+<TabItem label="Ubuntu 22.04 (Jammy Jellyfish)">
+    ```bash
+    wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
+    sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-jammy.list http://packages.lunarg.com/vulkan/lunarg-vulkan-jammy.list
+    sudo apt update
+    sudo apt install vulkan-sdk
+    ```
+</TabItem>
+</Tabs>
 
 If you’re using another distribution, see [LunarG’s official instructions](https://vulkan.lunarg.com/sdk/home#linux).
 
