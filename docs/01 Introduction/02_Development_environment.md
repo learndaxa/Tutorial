@@ -16,7 +16,7 @@ Follow these steps to set up your development environment for Daxa projects.
 Download the Daxa app template using one of the following options:
 
 - **Direct Download**: [Click here](https://codeload.github.com/learndaxa/daxa-app-template/zip/refs/heads/main) to download the template as a ZIP file.
-- **GitHub Repository**: Visit the [Daxa App Template GitHub Repository](https://github.com/learndaxa/daxa-app-template) to explore the project.
+- **GitHub Repository**: Visit the [Daxa App Template GitHub Repository](https://github.com/learndaxa/tutorial-starting-point) to explore the project.
 
 Once downloaded, extract the ZIP file and open the project in **VS Code**.
 
