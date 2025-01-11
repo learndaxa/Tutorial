@@ -265,7 +265,7 @@ inline GLFWwindow* get_glfw_window() const {
     - `GLFW_RAW_MOUSE_MOTION`: Enables raw mouse motion, bypassing OS-level acceleration for precise control. This function is ideal for games or interactive simulations where precise control over the mouse is required.
 2. `should_close()`:
     - Returns whether the window should close, typically triggered by the user clicking the close button or pressing Alt+F4.
-      :::info[Why Check for Closure?]
+      :::tip[Why Check for Closure?]
       This is a standard condition for exiting the main application loop and ensures proper cleanup before termination.
       :::
 3. `update()`:
