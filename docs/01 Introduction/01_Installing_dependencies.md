@@ -23,28 +23,28 @@ We’ll use the **Visual Studio compiler** on Windows (instead of Clang) due to 
 
 1. **Install Chocolatey** (Windows package manager) from an **elevated** (administrator) PowerShell session:
 
-```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; `
-[System.Net.ServicePointManager]::SecurityProtocol = `
-[System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
-iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-```
+    ```powershell
+    Set-ExecutionPolicy Bypass -Scope Process -Force; `
+    [System.Net.ServicePointManager]::SecurityProtocol = `
+    [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+    iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    ```
 
-:::tip
-If PowerShell requests script execution permissions, enable them with:
+    :::caution
+    If PowerShell requests script execution permissions, enable them with:
 
-```powershell
-Set-ExecutionPolicy AllSigned
-```
+    ```powershell
+    Set-ExecutionPolicy AllSigned
+    ```
 
-:::
+    :::
 
 2. Install LLVM (Clang) and Ninja
 
-```powershell
-choco install llvm
-choco install ninja
-```
+    ```powershell
+    choco install llvm
+    choco install ninja
+    ```
 
 ### 3. Misc Tools
 
