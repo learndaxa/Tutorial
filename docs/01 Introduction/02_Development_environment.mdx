@@ -5,6 +5,8 @@ slug: "introduction/development-environment"
 editUrl: https://github.com/learndaxa/Tutorial/edit/main/docs/01 Introduction/02_Development_environment.md
 ---
 
+import { FileTree } from '@astrojs/starlight/components';
+
 ## Setting Up Your Development Environment
 
 Follow these steps to set up your development environment for Daxa projects.
@@ -37,3 +39,16 @@ If you're new to CMake or Vcpkg, refer to their official documentation:
 - [Vcpkg Documentation](https://vcpkg.io/en/index.html)
 
 :::
+
+### Directory Structure
+
+<FileTree>
+- vcpkg.json
+- CMakePresets.json
+- CMakeLists.txt
+- .gitignore
+- src
+    - main.cpp
+- cmake
+    - deps.cmake
+</FileTree>
